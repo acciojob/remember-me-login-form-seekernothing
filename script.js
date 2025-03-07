@@ -5,38 +5,35 @@ document.addEventListener("DOMContentLoaded", function () {
     const rememberMeCheckbox = document.getElementById("checkbox");
     const existingUserBtn = document.getElementById("existing");
 
-    // Update existing user button visibility
+    // Unified function to update button visibility
     const updateExistingButton = () => {
         const hasCredentials = localStorage.getItem("username") && localStorage.getItem("password");
         existingUserBtn.style.display = hasCredentials ? "block" : "none";
     };
 
-    // Initial check for saved credentials
+    // Initial state check
     updateExistingButton();
 
-    // Form submission handler
     form.addEventListener("submit", function (event) {
         event.preventDefault();
         
-        const username = usernameInput.value;
-        const password = passwordInput.value;
+        const username = usernameInput.value.trim();
+        const password = passwordInput.value.trim();
 
-        // Update localStorage based on checkbox state
         if (rememberMeCheckbox.checked) {
             localStorage.setItem("username", username);
             localStorage.setItem("password", password);
         } else {
-            localStorage.removeItem("username");
-            localStorage.removeItem("password");
+            localStorage.clear();
         }
 
         alert(`Logged in as ${username}`);
-        updateExistingButton(); // Refresh button visibility
+        updateExistingButton();
     });
 
-    // Existing user login handler
     existingUserBtn.addEventListener("click", function () {
-        const currentUsername = localStorage.getItem("username");
-        alert(`Logged in as ${currentUsername}`);
+        // Get FRESH credentials from storage
+        const currentUser = localStorage.getItem("username");
+        alert(`Logged in as ${currentUser}`);
     });
 });
